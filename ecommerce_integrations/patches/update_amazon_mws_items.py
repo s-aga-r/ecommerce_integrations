@@ -22,7 +22,5 @@ def _create_ecommerce_item(item):
 	ecomm_item.integration = MODULE_NAME
 	ecomm_item.erpnext_item_code = item.name
 	ecomm_item.integration_item_code = item.amazon_item_code
-	ecomm_item.has_variants = 0
-	ecomm_item.sku = item.amazon_item_code
-	ecomm_item.flags.ignore_mandatory = True
+	ecomm_item.sku = item.item_code
 	ecomm_item.save(ignore_permissions=True)

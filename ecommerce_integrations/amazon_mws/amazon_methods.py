@@ -158,7 +158,6 @@ def create_item_code(amazon_item_json, sku):
 	mws_settings = frappe.get_doc(SETTINGS_DOCTYPE)
 
 	item.item_code = sku
-	item.amazon_item_code = amazon_item_json.ASIN
 	item.item_group = mws_settings.item_group
 	item.description = amazon_item_json.Product.AttributeSets.ItemAttributes.Title
 	item.brand = new_brand
@@ -185,10 +184,8 @@ def create_item_code(amazon_item_json, sku):
 	ecomm_item = frappe.new_doc("Ecommerce Item")
 	ecomm_item.integration = MODULE_NAME
 	ecomm_item.erpnext_item_code = item.name
-	ecomm_item.integration_item_code = sku
-	ecomm_item.has_variants = 0
+	ecomm_item.integration_item_code = amazon_item_json.ASIN
 	ecomm_item.sku = sku
-	ecomm_item.flags.ignore_mandatory = True
 	ecomm_item.save(ignore_permissions=True)
 
 	return item.name
