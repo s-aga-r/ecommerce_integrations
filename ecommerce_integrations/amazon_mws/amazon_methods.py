@@ -12,7 +12,7 @@ from frappe import _
 from six import StringIO
 
 import ecommerce_integrations.amazon_mws.amazon_mws_api as mws
-from ecommerce_integrations.amazon_mws.constants import SETTINGS_DOCTYPE
+from ecommerce_integrations.amazon_mws.constants import MODULE_NAME, SETTINGS_DOCTYPE
 
 
 # Get and Create Products
@@ -181,6 +181,15 @@ def create_item_code(amazon_item_json, sku):
 
 	item.insert(ignore_permissions=True)
 	create_item_price(amazon_item_json, item.item_code)
+
+	ecomm_item = frappe.new_doc("Ecommerce Item")
+	ecomm_item.integration = MODULE_NAME
+	ecomm_item.erpnext_item_code = item.name
+	ecomm_item.integration_item_code = sku
+	ecomm_item.has_variants = 0
+	ecomm_item.sku = sku
+	ecomm_item.flags.ignore_mandatory = True
+	ecomm_item.save(ignore_permissions=True)
 
 	return item.name
 
